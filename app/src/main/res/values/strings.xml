@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">DAA-Labo3</string>
+    <string name="sort_action">TRIER</string>
+    <string name="sort_by_creation_date">Creation date</string>
+    <string name="sort_by_eta">ETA</string>
+    <string name="action_generate">Generate</string>
+    <string name="action_delete_all">Delete all</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
