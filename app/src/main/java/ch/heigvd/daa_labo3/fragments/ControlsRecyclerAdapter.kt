@@ -13,8 +13,10 @@ import ch.heigvd.daa_labo3.models.Type.*
 class ControlsRecyclerAdapter(_items : List<Note> = listOf()) : RecyclerView.Adapter<ControlsRecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val titleNote = view.findViewById<TextView>(R.id.list_item_title)
+        private val textNote = view.findViewById<TextView>(R.id.list_item_text)
         fun bind(note : Note) {
             titleNote?.text = note.title
+            textNote?.text = note.text
         }
     }
 

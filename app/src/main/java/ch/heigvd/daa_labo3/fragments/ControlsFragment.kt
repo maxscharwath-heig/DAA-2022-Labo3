@@ -26,7 +26,7 @@ class ControlsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
+        viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
         // TODO: Use the ViewModel
     }
 }
