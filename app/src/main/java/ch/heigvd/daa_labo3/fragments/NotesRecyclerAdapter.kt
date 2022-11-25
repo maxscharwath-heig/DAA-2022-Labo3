@@ -9,20 +9,20 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ch.heigvd.daa_labo3.R
-import ch.heigvd.daa_labo3.models.Note
+import ch.heigvd.daa_labo3.models.NoteAndSchedule
 import ch.heigvd.daa_labo3.models.State.*
 import ch.heigvd.daa_labo3.models.Type.*
 
 
-class NotesRecyclerAdapter(_items: List<Note> = listOf()) :
+class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
     RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val iconNote = view.findViewById<ImageView>(R.id.list_item_icon)
         private val titleNote = view.findViewById<TextView>(R.id.list_item_title)
         private val textNote = view.findViewById<TextView>(R.id.list_item_text)
-        fun bind(note: Note) {
+        fun bind(noteAndSchedule: NoteAndSchedule) {
             iconNote.setImageResource(
-                when (note.type) {
+                when (noteAndSchedule.note.type) {
                     TODO -> R.drawable.todo
                     SHOPPING -> R.drawable.shopping
                     WORK -> R.drawable.work
@@ -30,16 +30,16 @@ class NotesRecyclerAdapter(_items: List<Note> = listOf()) :
                     else -> R.drawable.note
                 }
             )
-            iconNote.imageTintList = when (note.state) {
+            iconNote.imageTintList = when (noteAndSchedule.note.state) {
                 IN_PROGRESS -> ContextCompat.getColorStateList(iconNote.context, R.color.grey)
                 DONE -> ContextCompat.getColorStateList(iconNote.context, R.color.green)
             }
-            titleNote?.text = note.title
-            textNote?.text = note.text
+            titleNote?.text = noteAndSchedule.note.title
+            textNote?.text = noteAndSchedule.note.text
         }
     }
 
-    var items = listOf<Note>()
+    var items = listOf<NoteAndSchedule>()
 
     set(value) {
         val diffCallback = NotesDiffCallback(items, value)
@@ -55,7 +55,7 @@ class NotesRecyclerAdapter(_items: List<Note> = listOf()) :
     override fun getItemCount() = items.size
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].type.ordinal
+        return items[position].note.type.ordinal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

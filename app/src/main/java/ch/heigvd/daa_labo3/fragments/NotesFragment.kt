@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ch.heigvd.daa_labo3.MyApp
 import ch.heigvd.daa_labo3.R
 import ch.heigvd.daa_labo3.models.Note.Companion.generateRandomNote
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModel
@@ -36,6 +37,10 @@ class NotesFragment : Fragment() {
         val adapter = NotesRecyclerAdapter()
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
-        adapter.items = listOf(generateRandomNote(), generateRandomNote())
+
+
+        (requireActivity().application as MyApp).repository.allNotes.observe(viewLifecycleOwner) { notes ->
+            adapter.items = notes
+        }
     }
 }

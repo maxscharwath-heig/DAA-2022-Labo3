@@ -1,19 +1,19 @@
 package ch.heigvd.daa_labo3.fragments
 
 import androidx.recyclerview.widget.DiffUtil
-import ch.heigvd.daa_labo3.models.Note
+import ch.heigvd.daa_labo3.models.NoteAndSchedule
 
-class NotesDiffCallback(private val oldList: List<Note>, private val newList: List<Note>) :
+class NotesDiffCallback(private val oldList: List<NoteAndSchedule>, private val newList: List<NoteAndSchedule>) :
     DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
     override fun getNewListSize() = newList.size
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].noteId == newList[newItemPosition].noteId
+        return oldList[oldItemPosition].note.noteId == newList[newItemPosition].note.noteId
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val old = oldList[oldItemPosition]
         val new = newList[newItemPosition]
-        return old::class == new::class && old.state == new.state
+        return old::class == new::class && old.note.state == new.note.state
     }
 }
