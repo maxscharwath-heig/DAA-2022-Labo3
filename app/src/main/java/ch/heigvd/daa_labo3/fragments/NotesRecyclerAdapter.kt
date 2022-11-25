@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ch.heigvd.daa_labo3.R
 import ch.heigvd.daa_labo3.models.Note
@@ -13,20 +14,23 @@ import ch.heigvd.daa_labo3.models.State.*
 import ch.heigvd.daa_labo3.models.Type.*
 
 
-class ControlsRecyclerAdapter(_items : List<Note> = listOf()) : RecyclerView.Adapter<ControlsRecyclerAdapter.ViewHolder>() {
+class NotesRecyclerAdapter(_items: List<Note> = listOf()) :
+    RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val iconNote = view.findViewById<ImageView>(R.id.list_item_icon)
         private val titleNote = view.findViewById<TextView>(R.id.list_item_title)
         private val textNote = view.findViewById<TextView>(R.id.list_item_text)
-        fun bind(note : Note) {
-            iconNote.setImageResource(when(note.type) {
-                TODO -> R.drawable.todo
-                SHOPPING -> R.drawable.shopping
-                WORK -> R.drawable.work
-                FAMILY -> R.drawable.family
-                else -> R.drawable.note
-            })
-            iconNote.imageTintList = when(note.state) {
+        fun bind(note: Note) {
+            iconNote.setImageResource(
+                when (note.type) {
+                    TODO -> R.drawable.todo
+                    SHOPPING -> R.drawable.shopping
+                    WORK -> R.drawable.work
+                    FAMILY -> R.drawable.family
+                    else -> R.drawable.note
+                }
+            )
+            iconNote.imageTintList = when (note.state) {
                 IN_PROGRESS -> ContextCompat.getColorStateList(iconNote.context, R.color.grey)
                 DONE -> ContextCompat.getColorStateList(iconNote.context, R.color.green)
             }
@@ -38,10 +42,15 @@ class ControlsRecyclerAdapter(_items : List<Note> = listOf()) : RecyclerView.Ada
     var items = listOf<Note>()
 
     set(value) {
+        val diffCallback = NotesDiffCallback(items, value)
+        val diffItems = DiffUtil.calculateDiff(diffCallback)
         field = value
-        notifyDataSetChanged()
+        diffItems.dispatchUpdatesTo(this)
     }
-    init { items = _items }
+
+    init {
+        items = _items
+    }
 
     override fun getItemCount() = items.size
 
@@ -50,8 +59,11 @@ class ControlsRecyclerAdapter(_items : List<Note> = listOf()) : RecyclerView.Ada
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_notes, parent, false))
+        return ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.list_item_notes, parent, false)
+        )
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }

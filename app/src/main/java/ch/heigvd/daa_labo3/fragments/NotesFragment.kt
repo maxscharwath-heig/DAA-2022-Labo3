@@ -33,7 +33,7 @@ class NotesFragment : Fragment() {
         // TODO: Use the ViewModel
 
         val recycler = view.findViewById<RecyclerView>(R.id.recycler)
-        val adapter = ControlsRecyclerAdapter()
+        val adapter = NotesRecyclerAdapter()
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
         adapter.items = listOf(generateRandomNote(), generateRandomNote())
