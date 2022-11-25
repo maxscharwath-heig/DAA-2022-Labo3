@@ -9,7 +9,6 @@ import ch.heigvd.daa_labo3.repositories.DataRepository
 import ch.heigvd.daa_labo3.repositories.NoteDAO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlin.concurrent.thread
 
 @Database(entities = [Note::class, Schedule::class], version = 1, exportSchema = true)
 @TypeConverters(CalendarConverter::class)
@@ -22,22 +21,31 @@ abstract class AppDatabase : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(context.applicationContext,
                     AppDatabase::class.java, "mydatabase.db")
                     .fallbackToDestructiveMigration()
-                    .addCallback(object : Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            INSTANCE?.let { database ->
-                                val isEmpty = database.noteDao().getCountNotes().value == 0
-                                if (isEmpty) {
-                                    val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
-                                    for (i in 0..10) {
-                                        repo.generateANote()
-                                    }
-                                }
-                            }
-                        }
-                    })
+                    .addCallback(this.callback)
                     .build()
                 INSTANCE!!
+            }
+        }
+
+        private val callback = object : Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                INSTANCE?.let { database ->
+                    println("Populating database")
+                    val isEmpty = database.noteDao().getCountNotes().value == 0
+                    println("Database is empty: $isEmpty")
+                    if (isEmpty) {
+                        val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
+                        for (i in 0..10) {
+                            println("Generating note $i")
+                            repo.generateANote()
+                        }
+                    }
+                }
+            }
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+                println("Database is open")
             }
         }
     }
