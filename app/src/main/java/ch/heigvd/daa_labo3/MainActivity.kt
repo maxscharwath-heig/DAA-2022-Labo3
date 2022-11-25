@@ -9,6 +9,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        println("Chargement de l'activité principale")
+        println((application as MyApp).repository.allNotes.value)
+        (application as MyApp).repository.allNotes.observe(this) { notes ->
+            println("Notes reçues: $notes")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

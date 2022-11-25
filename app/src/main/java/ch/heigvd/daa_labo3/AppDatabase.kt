@@ -32,7 +32,8 @@ abstract class AppDatabase : RoomDatabase() {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
                     println("Populating database")
-                    val isEmpty = database.noteDao().getCountNotes().value == 0
+                    val isEmpty = database.noteDao().getCountNotes().value?.let { it == 0 } ?: true
+                    println("How many notes? ${database.noteDao().getCountNotes().value}")
                     println("Database is empty: $isEmpty")
                     if (isEmpty) {
                         val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
