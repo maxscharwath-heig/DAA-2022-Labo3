@@ -6,17 +6,16 @@ import ch.heigvd.daa_labo3.repositories.DataRepository
 
 class NotesViewModel(private val repository: DataRepository) : ViewModel() {
 
-    val allNotes = repository.allNotes
+    var allNotes = repository.allNotes
 
     val countNotes = repository.countNotes
 
-    // TODO: Implement the ViewModel
     fun sortByCreationDate() {
-
+        repository.sortByCreationDate()
     }
 
     fun sortByETA() {
-
+        repository.sortByETA()
     }
 
     fun generateANote() {

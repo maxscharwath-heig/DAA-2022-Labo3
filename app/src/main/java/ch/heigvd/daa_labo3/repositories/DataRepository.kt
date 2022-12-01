@@ -7,8 +7,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class DataRepository(private val noteDAO: NoteDAO, private val applicationScope: CoroutineScope) {
-    val allNotes: LiveData<List<NoteAndSchedule>> = noteDAO.getAllNotes()
+    var allNotes: LiveData<List<NoteAndSchedule>> = noteDAO.getAllNotes()
     val countNotes: LiveData<Int> = noteDAO.getCountNotes()
+
+    fun sortByCreationDate() {
+        applicationScope.launch {
+            noteDAO.getAllNotesSortedByCreationDate()
+        }
+    }
+
+    fun sortByETA() {
+        applicationScope.launch {
+            noteDAO.getAllNotesSortedByETA()
+        }
+    }
 
     fun deleteAllNotes() {
         applicationScope.launch {

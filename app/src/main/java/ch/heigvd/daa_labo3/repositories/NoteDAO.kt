@@ -19,8 +19,12 @@ interface NoteDAO {
     @Query("SELECT COUNT(*) FROM note")
     fun getCountNotes(): LiveData<Int>
 
-    //@Insert
-    //fun insertAll(vararg notes: NoteAndSchedule)
+    @Query("SELECT * FROM note ORDER BY creationDate DESC")
+    fun getAllNotesSortedByCreationDate(): LiveData<List<NoteAndSchedule>>
+
+    //@Query("SELECT * FROM note n INNER JOIN schedule s ON n.noteId = s.ownerId ORDER BY s.date DESC")
+    @Query("SELECT * FROM note ORDER BY creationDate ASC")
+    fun getAllNotesSortedByETA(): LiveData<List<NoteAndSchedule>>
 
     @Insert
     fun insert(note: Note): Long

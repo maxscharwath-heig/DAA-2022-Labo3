@@ -17,16 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
-/*
-        println("Chargement de l'activité principale")
-        println((application as MyApp).repository.allNotes.value)
-        (application as MyApp).repository.allNotes.observe(this) { notes ->
-            println("Notes reçues: $notes")
-        }
- */
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,19 +27,19 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.creation_date_filter -> {
-                // viewModel.sortByCreationDate()
+                viewModel.sortByCreationDate()
                 true
             }
             R.id.eta_filter -> {
-                // viewModel.sortByETA()
+                viewModel.sortByETA()
                 true
             }
             R.id.menu_actions_generate -> {
-                // viewModel.generateANote()
+                viewModel.generateANote()
                 true
             }
             R.id.menu_actions_delete_all -> {
-                // viewModel.deleteAllNote()
+                viewModel.deleteAllNote()
                 true
             }
             else -> super.onOptionsItemSelected(item)

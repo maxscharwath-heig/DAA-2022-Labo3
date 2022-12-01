@@ -15,10 +15,6 @@ import ch.heigvd.daa_labo3.viewmodels.NotesViewModelFactory
 
 class NotesFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = NotesFragment()
-    }
-
     private val viewModel: NotesViewModel by activityViewModels {
         NotesViewModelFactory((requireActivity().application as MyApp).repository)
     }
@@ -38,7 +34,7 @@ class NotesFragment : Fragment() {
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
-        (requireActivity().application as MyApp).repository.allNotes.observe(viewLifecycleOwner) { notes ->
+        viewModel.allNotes.observe(viewLifecycleOwner) { notes ->
             adapter.items = notes
         }
     }
