@@ -8,4 +8,5 @@
     <string name="icon_note_description">Icon of a note showing its type</string>
     <string name="icon_schedule_description">Icon of a watch show if the note has a schedule</string>
     <string name="notes_fragment_title">My notes</string>
+    <string name="empty_note">Aucune note</string>
 </resources>
