@@ -1,17 +1,17 @@
 package ch.heigvd.daa_labo3.fragments
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.heigvd.daa_labo3.MyApp
 import ch.heigvd.daa_labo3.R
-import ch.heigvd.daa_labo3.models.Note.Companion.generateRandomNote
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModel
+import ch.heigvd.daa_labo3.viewmodels.NotesViewModelFactory
 
 class NotesFragment : Fragment() {
 
@@ -19,7 +19,9 @@ class NotesFragment : Fragment() {
         fun newInstance() = NotesFragment()
     }
 
-    private lateinit var viewModel: NotesViewModel
+    private val viewModel: NotesViewModel by activityViewModels {
+        NotesViewModelFactory((requireActivity().application as MyApp).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +37,6 @@ class NotesFragment : Fragment() {
         val adapter = NotesRecyclerAdapter()
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
-
 
         (requireActivity().application as MyApp).repository.allNotes.observe(viewLifecycleOwner) { notes ->
             adapter.items = notes
