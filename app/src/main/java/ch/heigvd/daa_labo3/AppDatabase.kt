@@ -31,22 +31,11 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
-                    println("Populating database")
-                    val isEmpty = database.noteDao().getCountNotes().value?.let { it == 0 } ?: true
-                    println("How many notes? ${database.noteDao().getCountNotes().value}")
-                    println("Database is empty: $isEmpty")
-                    if (isEmpty) {
-                        val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
-                        for (i in 0..10) {
-                            println("Generating note $i")
-                            repo.generateANote()
-                        }
+                    val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
+                    for (i in 0..10) {
+                        repo.generateANote()
                     }
                 }
-            }
-            override fun onOpen(db: SupportSQLiteDatabase) {
-                super.onOpen(db)
-                println("Database is open")
             }
         }
     }
