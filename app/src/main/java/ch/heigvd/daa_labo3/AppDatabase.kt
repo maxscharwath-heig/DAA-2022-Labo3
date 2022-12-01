@@ -5,10 +5,8 @@ import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.heigvd.daa_labo3.models.Note
 import ch.heigvd.daa_labo3.models.Schedule
-import ch.heigvd.daa_labo3.repositories.DataRepository
 import ch.heigvd.daa_labo3.repositories.NoteDAO
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
+import kotlin.concurrent.thread
 
 @Database(entities = [Note::class, Schedule::class], version = 1, exportSchema = true)
 @TypeConverters(CalendarConverter::class)
@@ -31,9 +29,17 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
-                    val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
-                    for (i in 0..10) {
-                        repo.generateANote()
+                    thread {
+                        for (i in 0..10) {
+                            val note = Note.generateRandomNote()
+                            val schedule = Note.generateRandomSchedule()
+
+                            val id = database.noteDao().insert(note)
+                            if (schedule != null) {
+                                schedule.ownerId = id
+                                database.noteDao().insert(schedule)
+                            }
+                        }
                     }
                 }
             }
