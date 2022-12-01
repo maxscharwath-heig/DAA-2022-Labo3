@@ -13,7 +13,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/notes_fragment_title"
+        android:id="@+id/controls_fragment_notes_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
@@ -21,7 +21,7 @@
         android:textSize="40sp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/controls_fragment_button"
+        android:id="@+id/controls_fragment_button_generate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
@@ -29,7 +29,7 @@
         android:textStyle="bold" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/controls_fragment_button2"
+        android:id="@+id/controls_fragment_button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"

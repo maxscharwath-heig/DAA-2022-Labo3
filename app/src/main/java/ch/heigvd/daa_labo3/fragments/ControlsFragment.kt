@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import ch.heigvd.daa_labo3.MyApp
 import ch.heigvd.daa_labo3.R
@@ -26,5 +27,21 @@ class ControlsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val notesCounter = view.findViewById<TextView>(R.id.controls_fragment_notes_counter)
+        val buttonGenerate = view.findViewById<TextView>(R.id.controls_fragment_button_generate)
+        val buttonDelete = view.findViewById<TextView>(R.id.controls_fragment_button_delete)
+
+        viewModel.allNotes.observe(viewLifecycleOwner) { notes ->
+            notesCounter.text = notes.size.toString()
+        }
+
+        buttonGenerate.setOnClickListener {
+            viewModel.generateANote()
+        }
+
+        buttonDelete.setOnClickListener {
+            viewModel.deleteAllNote()
+        }
     }
 }
