@@ -30,8 +30,6 @@ class NotesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
-        // TODO: Use the ViewModel
 
         val recycler = view.findViewById<RecyclerView>(R.id.recycler)
         val adapter = NotesRecyclerAdapter()

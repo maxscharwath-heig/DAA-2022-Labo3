@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ch.heigvd.daa_labo3.repositories.DataRepository
 
-class NotesViewModel (private val repository: DataRepository) : ViewModel() {
+class NotesViewModel(private val repository: DataRepository) : ViewModel() {
 
     val allNotes = repository.allNotes
 
@@ -28,6 +28,7 @@ class NotesViewModel (private val repository: DataRepository) : ViewModel() {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class NotesViewModelFactory(private val repository: DataRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(NotesViewModel::class.java)) {
