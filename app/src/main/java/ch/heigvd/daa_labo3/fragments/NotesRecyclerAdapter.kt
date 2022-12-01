@@ -12,6 +12,7 @@ import ch.heigvd.daa_labo3.R
 import ch.heigvd.daa_labo3.models.NoteAndSchedule
 import ch.heigvd.daa_labo3.models.State.*
 import ch.heigvd.daa_labo3.models.Type.*
+import java.util.Calendar
 
 
 class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
@@ -40,23 +41,63 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
             }
             titleNote?.text = noteAndSchedule.note.title
             textNote?.text = noteAndSchedule.note.text
-            iconSchedule.visibility = if (noteAndSchedule.schedule != null) View.VISIBLE else View.GONE
-            textSchedule.visibility = if (noteAndSchedule.schedule != null) View.VISIBLE else View.GONE
-            textSchedule?.text = noteAndSchedule.schedule?.date?.time?.toString()
+            if (noteAndSchedule.schedule != null) {
+                iconSchedule.visibility = View.VISIBLE
+                textSchedule.visibility = View.VISIBLE
+
+                val (dateText, isLate)  = displayDateDifference(
+                    noteAndSchedule.note.creationDate,
+                    noteAndSchedule.schedule.date
+                )
+
+                textSchedule.text = dateText
+                iconSchedule.imageTintList = when (isLate) {
+                    true -> ContextCompat.getColorStateList(iconSchedule.context, R.color.red)
+                    false -> ContextCompat.getColorStateList(iconSchedule.context, R.color.grey)
+                }
+            }
         }
     }
 
     var items = listOf<NoteAndSchedule>()
-
-    set(value) {
-        val diffCallback = NotesDiffCallback(items, value)
-        val diffItems = DiffUtil.calculateDiff(diffCallback)
-        field = value
-        diffItems.dispatchUpdatesTo(this)
-    }
+        set(value) {
+            val diffCallback = NotesDiffCallback(items, value)
+            val diffItems = DiffUtil.calculateDiff(diffCallback)
+            field = value
+            diffItems.dispatchUpdatesTo(this)
+        }
 
     init {
         items = _items
+    }
+
+    private fun displayDateDifference(
+        creationDate: Calendar,
+        dueDate: Calendar
+    ): Pair<String, Boolean> {
+        val late = false
+        var dateText = ""
+        val diff = dueDate.timeInMillis.minus(creationDate.timeInMillis)
+
+        if (diff < 0 ){
+           return Pair("Late", true)
+        }
+
+        val diffMonths = diff.div(1000 * 60 * 60 * 24).div(30)
+        val diffWeeks = diff.div(1000 * 60 * 60 * 24 * 7)
+        val diffDays = diff.div(1000 * 60 * 60 * 24)
+        val diffHours = diff.div(1000 * 60 * 60) % 24
+        val diffMinutes = diff.div(1000 * 60) % 60
+
+        dateText = when {
+            diffMonths > 0 -> "$diffMonths " + if (diffMonths == 1.toLong()) "month" else "months"
+            diffWeeks > 0 -> "$diffWeeks " + if (diffWeeks == 1.toLong()) "week" else "weeks"
+            diffDays > 0 -> "$diffDays " + if (diffDays == 1.toLong()) "day" else "days"
+            diffHours > 0 -> "$diffHours " + if (diffHours == 1.toLong()) "hour" else "hours"
+            else -> "$diffMinutes " + if (diffMinutes == 1.toLong()) "minute" else "minutes"
+        }
+
+        return Pair(dateText, late)
     }
 
     override fun getItemCount() = items.size
