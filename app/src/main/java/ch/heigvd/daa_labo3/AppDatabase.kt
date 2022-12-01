@@ -5,10 +5,8 @@ import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.heigvd.daa_labo3.models.Note
 import ch.heigvd.daa_labo3.models.Schedule
-import ch.heigvd.daa_labo3.repositories.DataRepository
 import ch.heigvd.daa_labo3.repositories.NoteDAO
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
+import kotlin.concurrent.thread
 
 @Database(entities = [Note::class, Schedule::class], version = 1, exportSchema = true)
 @TypeConverters(CalendarConverter::class)
@@ -31,22 +29,19 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
-                    println("Populating database")
-                    val isEmpty = database.noteDao().getCountNotes().value?.let { it == 0 } ?: true
-                    println("How many notes? ${database.noteDao().getCountNotes().value}")
-                    println("Database is empty: $isEmpty")
-                    if (isEmpty) {
-                        val repo = DataRepository(database.noteDao(), CoroutineScope(SupervisorJob()))
+                    thread {
                         for (i in 0..10) {
-                            println("Generating note $i")
-                            repo.generateANote()
+                            val note = Note.generateRandomNote()
+                            val schedule = Note.generateRandomSchedule()
+
+                            val id = database.noteDao().insert(note)
+                            if (schedule != null) {
+                                schedule.ownerId = id
+                                database.noteDao().insert(schedule)
+                            }
                         }
                     }
                 }
-            }
-            override fun onOpen(db: SupportSQLiteDatabase) {
-                super.onOpen(db)
-                println("Database is open")
             }
         }
     }
