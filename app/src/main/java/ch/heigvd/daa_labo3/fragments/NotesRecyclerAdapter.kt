@@ -20,6 +20,10 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
         private val iconNote = view.findViewById<ImageView>(R.id.list_item_icon)
         private val titleNote = view.findViewById<TextView>(R.id.list_item_title)
         private val textNote = view.findViewById<TextView>(R.id.list_item_text)
+
+        private val iconSchedule = view.findViewById<ImageView>(R.id.schedule_icon)
+        private val textSchedule = view.findViewById<TextView>(R.id.schedule_text)
+
         fun bind(noteAndSchedule: NoteAndSchedule) {
             iconNote.setImageResource(
                 when (noteAndSchedule.note.type) {
@@ -27,7 +31,7 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
                     SHOPPING -> R.drawable.shopping
                     WORK -> R.drawable.work
                     FAMILY -> R.drawable.family
-                    else -> R.drawable.note
+                    NONE -> R.drawable.note
                 }
             )
             iconNote.imageTintList = when (noteAndSchedule.note.state) {
@@ -36,6 +40,9 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
             }
             titleNote?.text = noteAndSchedule.note.title
             textNote?.text = noteAndSchedule.note.text
+            iconSchedule.visibility = if (noteAndSchedule.schedule != null) View.VISIBLE else View.GONE
+            textSchedule.visibility = if (noteAndSchedule.schedule != null) View.VISIBLE else View.GONE
+            textSchedule?.text = noteAndSchedule.schedule?.date?.time?.toString()
         }
     }
 
