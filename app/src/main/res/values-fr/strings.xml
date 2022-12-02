@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DAA-Labo3</string>
+    <string name="sort_action">TRIER</string>
+    <string name="sort_by_creation_date">Date de création</string>
+    <string name="sort_by_eta">ETA</string>
+    <string name="action_generate">Générer</string>
+    <string name="action_delete_all">Tout supprimer</string>
+    <string name="button_delete">Supprimer</string>
+    <string name="icon_note_description">Icone d\'un type de note</string>
+    <string name="icon_schedule_description">Icone confirmant la présence d\'un schedule</string>
+    <string name="notes_fragment_title">Mes notes</string>
+    <string name="empty_note">Aucune note</string>
+    <string name="schedule_late">En retard</string>
+    <plurals name="schedule_month">
+        <item quantity="one">%d mois</item>
+        <item quantity="many">%d mois</item>
+        <item quantity="other">%d mois</item>
+    </plurals>
+    <plurals name="schedule_week">
+        <item quantity="one">%d semaine</item>
+        <item quantity="many">%d semaines</item>
+        <item quantity="other">%d semaines</item>
+    </plurals>
+    <plurals name="schedule_day">
+        <item quantity="one">%d jour</item>
+        <item quantity="many">%d jours</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="schedule_hour">
+        <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+    <plurals name="schedule_minute">
+        <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+</resources>
