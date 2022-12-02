@@ -32,8 +32,8 @@ class ControlsFragment : Fragment() {
         val buttonGenerate = view.findViewById<TextView>(R.id.controls_fragment_button_generate)
         val buttonDelete = view.findViewById<TextView>(R.id.controls_fragment_button_delete)
 
-        viewModel.allNotes.observe(viewLifecycleOwner) { notes ->
-            notesCounter.text = notes.size.toString()
+        viewModel.countNotes.observe(viewLifecycleOwner) { count ->
+            notesCounter.text = count.toString()
         }
 
         buttonGenerate.setOnClickListener {
