@@ -1,8 +1,14 @@
 package ch.heigvd.daa_labo3.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ch.heigvd.daa_labo3.models.NoteAndSchedule
 import ch.heigvd.daa_labo3.repositories.DataRepository
+
+enum class SortOrder { BY_CREATION_DATE, BY_ETA, BY_NONE }
 
 class NotesViewModel(private val repository: DataRepository) : ViewModel() {
 
@@ -10,12 +16,22 @@ class NotesViewModel(private val repository: DataRepository) : ViewModel() {
 
     val countNotes = repository.countNotes
 
-    fun sortByCreationDate() {
-        repository.sortByCreationDate()
+    private val sortOrder: LiveData<SortOrder> = MutableLiveData(SortOrder.BY_CREATION_DATE)
+
+    fun setSortOrder(sortOrder: SortOrder) {
+        (this.sortOrder as MutableLiveData).value = sortOrder
     }
 
-    fun sortByETA() {
-        repository.sortByETA()
+    fun getFilteredNotes(): LiveData<List<NoteAndSchedule>> {
+        return Transformations.map(repository.allNotes) { notes ->
+            when (sortOrder.value) {
+                SortOrder.BY_CREATION_DATE -> notes.sortedByDescending { it.note.creationDate }
+                SortOrder.BY_ETA -> notes.sortedBy { it.schedule?.date }
+                else -> {
+                    notes
+                }
+            }
+        }
     }
 
     fun generateANote() {

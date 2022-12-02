@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModel
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModelFactory
+import ch.heigvd.daa_labo3.viewmodels.SortOrder
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,11 +28,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.creation_date_filter -> {
-                viewModel.sortByCreationDate()
+                viewModel.setSortOrder(SortOrder.BY_CREATION_DATE)
                 true
             }
             R.id.eta_filter -> {
-                viewModel.sortByETA()
+                viewModel.setSortOrder(SortOrder.BY_ETA)
                 true
             }
             R.id.menu_actions_generate -> {

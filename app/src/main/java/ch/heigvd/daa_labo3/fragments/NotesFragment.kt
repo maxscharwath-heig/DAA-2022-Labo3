@@ -34,7 +34,7 @@ class NotesFragment : Fragment() {
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
-        viewModel.allNotes.observe(viewLifecycleOwner) { notes ->
+        viewModel.getFilteredNotes().observe(viewLifecycleOwner) { notes ->
             adapter.items = notes
         }
     }
