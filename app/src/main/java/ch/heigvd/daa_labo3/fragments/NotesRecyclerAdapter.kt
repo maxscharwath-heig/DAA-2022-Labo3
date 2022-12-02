@@ -1,5 +1,6 @@
 package ch.heigvd.daa_labo3.fragments
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
                 textSchedule.visibility = View.VISIBLE
 
                 val (dateText, isLate)  = displayDateDifference(
+                    itemView.context,
                     noteAndSchedule.note.creationDate,
                     noteAndSchedule.schedule.date
                 )
@@ -72,6 +74,7 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
     }
 
     private fun displayDateDifference(
+        context: Context,
         creationDate: Calendar,
         dueDate: Calendar
     ): Pair<String, Boolean> {
@@ -80,7 +83,7 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
         val diff = dueDate.timeInMillis.minus(creationDate.timeInMillis)
 
         if (diff < 0 ){
-           return Pair("Late", true)
+           return Pair(context.getString(R.string.schedule_late), true)
         }
 
         val diffMonths = diff.div(1000 * 60 * 60 * 24).div(30)
@@ -90,11 +93,11 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
         val diffMinutes = diff.div(1000 * 60) % 60
 
         dateText = when {
-            diffMonths > 0 -> "$diffMonths " + if (diffMonths == 1.toLong()) "month" else "months"
-            diffWeeks > 0 -> "$diffWeeks " + if (diffWeeks == 1.toLong()) "week" else "weeks"
-            diffDays > 0 -> "$diffDays " + if (diffDays == 1.toLong()) "day" else "days"
-            diffHours > 0 -> "$diffHours " + if (diffHours == 1.toLong()) "hour" else "hours"
-            else -> "$diffMinutes " + if (diffMinutes <= 1.toLong()) "minute" else "minutes"
+            diffMonths > 0 -> context.resources.getQuantityString(R.plurals.schedule_month, diffMonths.toInt(), diffMonths)
+            diffWeeks > 0 -> context.resources.getQuantityString(R.plurals.schedule_week, diffWeeks.toInt(), diffWeeks)
+            diffDays > 0 -> context.resources.getQuantityString(R.plurals.schedule_day, diffDays.toInt(), diffDays)
+            diffHours > 0 -> context.resources.getQuantityString(R.plurals.schedule_hour, diffHours.toInt(), diffHours)
+            else -> context.resources.getQuantityString(R.plurals.schedule_minute, diffMinutes.toInt(), diffMinutes)
         }
 
         return Pair(dateText, late)
