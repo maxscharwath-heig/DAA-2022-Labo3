@@ -17,13 +17,17 @@ class NotesViewModel(private val repository: DataRepository) : ViewModel() {
 
     private val sortOrder: LiveData<SortOrder> = MutableLiveData(SortOrder.BY_NONE)
 
-    val sortedNotes = Transformations.switchMap(sortOrder) { it ->
+    val sortedNotes = Transformations.switchMap(sortOrder) {
         when (it) {
-            SortOrder.BY_CREATION_DATE -> repository.allNotesByCreationDate
-            SortOrder.BY_ETA -> Transformations.map(repository.allNotes) { notes ->
-                notes.sortedBy { note -> note.schedule?.date }
+            SortOrder.BY_CREATION_DATE -> Transformations.map(allNotes) { notes ->
+                notes.sortedBy { note -> note.note.creationDate }
             }
-            else -> repository.allNotes
+
+            SortOrder.BY_ETA -> Transformations.map(allNotes) { notes ->
+                //notes.sortedBy { note -> note.schedule?.date }
+                notes.sortedWith(nullsLast(compareBy { it.schedule?.date }))
+            }
+            else -> allNotes
         }
     }
 
