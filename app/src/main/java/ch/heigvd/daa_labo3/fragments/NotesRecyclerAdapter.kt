@@ -76,7 +76,7 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
         dueDate: Calendar
     ): Pair<String, Boolean> {
         val late = false
-        var dateText = ""
+        val dateText: String
         val diff = dueDate.timeInMillis.minus(creationDate.timeInMillis)
 
         if (diff < 0 ){
@@ -94,7 +94,7 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
             diffWeeks > 0 -> "$diffWeeks " + if (diffWeeks == 1.toLong()) "week" else "weeks"
             diffDays > 0 -> "$diffDays " + if (diffDays == 1.toLong()) "day" else "days"
             diffHours > 0 -> "$diffHours " + if (diffHours == 1.toLong()) "hour" else "hours"
-            else -> "$diffMinutes " + if (diffMinutes == 1.toLong()) "minute" else "minutes"
+            else -> "$diffMinutes " + if (diffMinutes <= 1.toLong()) "minute" else "minutes"
         }
 
         return Pair(dateText, late)
