@@ -14,6 +14,7 @@ import ch.heigvd.daa_labo3.models.NoteAndSchedule
 import ch.heigvd.daa_labo3.models.State.*
 import ch.heigvd.daa_labo3.models.Type.*
 import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 /**
  * Adapter for displaying notes
@@ -54,7 +55,6 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
 
                 val (dateText, isLate) = displayDateDifference(
                     itemView.context,
-                    noteAndSchedule.note.creationDate,
                     noteAndSchedule.schedule.date
                 )
 
@@ -81,52 +81,64 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
 
     private fun displayDateDifference(
         context: Context,
-        creationDate: Calendar,
         dueDate: Calendar
     ): Pair<String, Boolean> {
-        val late = false
-        val dateText: String
-        val diff = dueDate.timeInMillis.minus(creationDate.timeInMillis)
+        val diff = dueDate.timeInMillis.minus(Calendar.getInstance().timeInMillis)
 
-        if (diff < 0) {
-            return Pair(context.getString(R.string.schedule_late), true)
+        if (diff <= 0) return Pair(context.getString(R.string.schedule_late), true)
+
+        val diffMinutes = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS)
+        val diffHours = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS)
+        val diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+        val diffWeeks = diffDays.div(dueDate.getActualMaximum(Calendar.DAY_OF_WEEK))
+        val diffMonths = diffDays.div(dueDate.getActualMaximum(Calendar.DAY_OF_MONTH))
+
+        when {
+            diffMonths > 0 ->
+                return Pair(
+                    context.resources.getQuantityString(
+                        R.plurals.schedule_month,
+                        diffMonths.toInt(),
+                        diffMonths
+                    ), false
+                )
+            diffWeeks > 0 ->
+                return Pair(
+                    context.resources.getQuantityString(
+                        R.plurals.schedule_week,
+                        diffWeeks.toInt(),
+                        diffWeeks
+                    ), false
+                )
+            diffDays > 0 ->
+                return Pair(
+                    context.resources.getQuantityString(
+                        R.plurals.schedule_day,
+                        diffDays.toInt(),
+                        diffDays
+                    ), false
+                )
+            diffHours > 0 ->
+                return Pair(
+                    context.resources.getQuantityString(
+                        R.plurals.schedule_hour,
+                        diffHours.toInt(),
+                        diffHours
+                    ), false
+                )
+            diffMinutes > 0 ->
+                return Pair(
+                    context.resources.getQuantityString(
+                        R.plurals.schedule_minute,
+                        diffMinutes.toInt(),
+                        diffMinutes
+                    ), false
+                )
+            else -> return Pair(
+                context.getString(R.string.schedule_late),
+                true
+            ) // We assume if the remaining time is less than a minute, it's late
         }
-
-        val diffMonths = diff.div(1000 * 60 * 60 * 24).div(30)
-        val diffWeeks = diff.div(1000 * 60 * 60 * 24 * 7)
-        val diffDays = diff.div(1000 * 60 * 60 * 24)
-        val diffHours = diff.div(1000 * 60 * 60) % 24
-        val diffMinutes = diff.div(1000 * 60) % 60
-
-        dateText = when {
-            diffMonths > 0 -> context.resources.getQuantityString(
-                R.plurals.schedule_month,
-                diffMonths.toInt(),
-                diffMonths
-            )
-            diffWeeks > 0 -> context.resources.getQuantityString(
-                R.plurals.schedule_week,
-                diffWeeks.toInt(),
-                diffWeeks
-            )
-            diffDays > 0 -> context.resources.getQuantityString(
-                R.plurals.schedule_day,
-                diffDays.toInt(),
-                diffDays
-            )
-            diffHours > 0 -> context.resources.getQuantityString(
-                R.plurals.schedule_hour,
-                diffHours.toInt(),
-                diffHours
-            )
-            else -> context.resources.getQuantityString(
-                R.plurals.schedule_minute,
-                diffMinutes.toInt(),
-                diffMinutes
-            )
-        }
-
-        return Pair(dateText, late)
     }
 
     override fun getItemCount() = items.size
