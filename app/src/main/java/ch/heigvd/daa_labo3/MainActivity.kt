@@ -9,6 +9,13 @@ import ch.heigvd.daa_labo3.viewmodels.NotesViewModel
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModelFactory
 import ch.heigvd.daa_labo3.viewmodels.SortOrder
 
+/**
+ * Notes activity
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: NotesViewModel by viewModels {

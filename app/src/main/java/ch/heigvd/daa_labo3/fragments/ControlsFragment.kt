@@ -12,6 +12,13 @@ import ch.heigvd.daa_labo3.R
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModel
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModelFactory
 
+/**
+ * Fragment for operations on notes
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 class ControlsFragment : Fragment() {
 
     private val viewModel: NotesViewModel by activityViewModels {

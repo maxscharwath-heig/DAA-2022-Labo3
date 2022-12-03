@@ -6,6 +6,13 @@ import ch.heigvd.daa_labo3.models.NoteAndSchedule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Data unique access point to the database through DAO
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 class DataRepository(private val noteDAO: NoteDAO, private val applicationScope: CoroutineScope) {
     var allNotes: LiveData<List<NoteAndSchedule>> = noteDAO.getAllNotes()
     val countNotes: LiveData<Int> = noteDAO.getCountNotes()

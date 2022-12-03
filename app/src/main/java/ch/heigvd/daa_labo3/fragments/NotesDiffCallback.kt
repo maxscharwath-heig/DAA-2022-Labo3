@@ -3,6 +3,13 @@ package ch.heigvd.daa_labo3.fragments
 import androidx.recyclerview.widget.DiffUtil
 import ch.heigvd.daa_labo3.models.NoteAndSchedule
 
+/**
+ * Fragment for operations on notes
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 class NotesDiffCallback(private val oldList: List<NoteAndSchedule>, private val newList: List<NoteAndSchedule>) :
     DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size

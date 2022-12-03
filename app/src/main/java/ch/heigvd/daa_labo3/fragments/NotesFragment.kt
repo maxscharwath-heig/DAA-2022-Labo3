@@ -13,6 +13,13 @@ import ch.heigvd.daa_labo3.R
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModel
 import ch.heigvd.daa_labo3.viewmodels.NotesViewModelFactory
 
+/**
+ * Fragment for displaying notes using a RecyclerView
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 class NotesFragment : Fragment() {
 
     private val viewModel: NotesViewModel by activityViewModels {

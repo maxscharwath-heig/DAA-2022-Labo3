@@ -8,6 +8,13 @@ import ch.heigvd.daa_labo3.models.Note
 import ch.heigvd.daa_labo3.models.NoteAndSchedule
 import ch.heigvd.daa_labo3.models.Schedule
 
+/**
+ * Data Access Object for database interactions
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 @Dao
 interface NoteDAO {
     @Query("SELECT * FROM note")

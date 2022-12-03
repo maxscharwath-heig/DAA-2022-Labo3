@@ -9,6 +9,13 @@ import ch.heigvd.daa_labo3.repositories.DataRepository
 
 enum class SortOrder { BY_CREATION_DATE, BY_ETA, BY_NONE }
 
+/**
+ * ViewModel used to interact with data in the activities & fragments scopes.
+ *
+ * @author Nicolas Crausaz
+ * @author Lazar Pavicevic
+ * @author Maxime Scharwath
+ */
 class NotesViewModel(private val repository: DataRepository) : ViewModel() {
 
     var allNotes = repository.allNotes
