@@ -20,12 +20,11 @@ class NotesViewModel(private val repository: DataRepository) : ViewModel() {
     val sortedNotes = Transformations.switchMap(sortOrder) {
         when (it) {
             SortOrder.BY_CREATION_DATE -> Transformations.map(allNotes) { notes ->
-                notes.sortedBy { note -> note.note.creationDate }
+                notes.sortedByDescending { note -> note.note.creationDate }
             }
 
             SortOrder.BY_ETA -> Transformations.map(allNotes) { notes ->
-                //notes.sortedBy { note -> note.schedule?.date }
-                notes.sortedWith(nullsLast(compareBy { it.schedule?.date }))
+                notes.sortedWith(compareBy(nullsLast()) { note -> note.schedule?.date })
             }
             else -> allNotes
         }
