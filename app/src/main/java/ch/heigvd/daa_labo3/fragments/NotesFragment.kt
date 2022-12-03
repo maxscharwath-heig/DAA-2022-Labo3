@@ -37,12 +37,11 @@ class NotesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recycler = view.findViewById<RecyclerView>(R.id.recycler)
-        val adapter = NotesRecyclerAdapter()
-        recycler.adapter = adapter
+        recycler.adapter = NotesRecyclerAdapter()
         recycler.layoutManager = LinearLayoutManager(context)
 
         viewModel.sortedNotes.observe(viewLifecycleOwner) { notes ->
-            adapter.items = notes
+            (recycler.adapter as NotesRecyclerAdapter).items = notes
         }
     }
 }
