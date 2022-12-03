@@ -71,8 +71,8 @@ class NotesRecyclerAdapter(_items: List<NoteAndSchedule> = listOf()) :
                 IN_PROGRESS -> ContextCompat.getColorStateList(iconNote.context, R.color.grey)
                 DONE -> ContextCompat.getColorStateList(iconNote.context, R.color.green)
             }
-            titleNote?.text = noteAndSchedule.note.title
-            textNote?.text = noteAndSchedule.note.text
+            titleNote.text = noteAndSchedule.note.title
+            textNote.text = noteAndSchedule.note.text
 
             if (noteAndSchedule.schedule != null) {
                 val (dateText, isLate) = displayDateDifference(
