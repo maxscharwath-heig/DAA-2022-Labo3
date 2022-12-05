@@ -42,9 +42,9 @@ abstract class AppDatabase : RoomDatabase() {
                     thread {
                         for (i in 0..10) {
                             val note = Note.generateRandomNote()
-                            val schedule = Note.generateRandomSchedule()
-
                             val id = database.noteDao().insert(note)
+
+                            val schedule = Note.generateRandomSchedule()
                             if (schedule != null) {
                                 schedule.ownerId = id
                                 database.noteDao().insert(schedule)
